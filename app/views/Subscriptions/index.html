@@ -5,13 +5,30 @@
 
 <form method="POST" action="{{url "Subscriptions.Create"}}">
 
-    <div>
-        <label>Frequency (times per day)</label>
-        <input name="subscription.Frequency" required type="range" min="1" max="6" />
-    </div>
+
     <div>
         <label>Subredit</label>
         <input name="subscription.Subredit" required />
+    </div>
+    <div>
+        <label>MaxDailyPosts</label>
+        <input name="subscription.MaxDailyPosts" type="number" min="1" max="25" />
+
+    </div>
+
+    <div>
+        <label>Min Vote Ratio</label>
+        <input name="subscription.MinVoteRatio" type="number" min="-100" max="100" />
+    </div>
+
+    <div>
+        <label>Min Vote Count</label>
+        <input name="subscription.MinVoteCount" type="number" min="1" />
+    </div>
+
+    <div>
+        <label>Min Number Of Comments</label>
+        <input name="subscription.MinNumberOfComments" type="number" min="1" />
     </div>
 
     <div>
@@ -39,9 +56,13 @@
 <table>
     <thead>
         <tr>
-            <th>Frequency</th>
-            <th>OwnerID</th>
+            <!-- <th>Frequency</th> -->
+            <!-- <th>OwnerID</th> -->
             <th>Subredit</th>
+            <th>Max Daily Posts</th>
+            <th>min Vote ratio</th>
+            <th>min Vote count</th>
+            <th>min number of comments</th>
             <th>IncludeComments</th>
             <th>IncludeUserNames</th>
 
@@ -53,15 +74,19 @@
         {{range .subscriptions}}
 
         <tr>
-            <td>{{.Frequency}}</td>
-            <td>{{.OwnerID}}</td>
+            <!-- <td>{{.Frequency}}</td> -->
+            <!-- <td>{{.OwnerID}}</td> -->
             <td>{{.Subredit}}</td>
+            <td>{{.MaxDailyPosts}}</td>
+            <th>{{.MinVoteRatio}}</th>
+            <th>{{.MinVoteCount}}</th>
+            <th>{{.MinNumberOfComments}}</th>
             <td>{{.IncludeComments}}</td>
             <td>{{.IncludeUserNames}}</td>
-
+            <td><a href="/feed/{{.SubscriptionID}}.rss">RSS Link</a></td>
             <td>
-                <form id="d{{.SubscriptionID}}" method="POST" action="/bookings/{{.SubscriptionID}}/cancel">
-                    <a href="javascript:document.getElementById('d{{.SubscriptionID}}').submit();">Cancel</a>
+                <form id="d{{.SubscriptionID}}" method="POST" action="/subscriptions/{{.SubscriptionID}}/delete">
+                    <a href="javascript:document.getElementById('d{{.SubscriptionID}}').submit();">Delete</a>
                 </form>
             </td>
         </tr>

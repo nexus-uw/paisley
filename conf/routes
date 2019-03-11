@@ -20,7 +20,7 @@ POST    /subscriptions  Subscriptions.Create
 #PUT     /subscriptions/:id  Subscriptions.Edit
 
 
-GET     /feed/:subredit  Feed.GetFeed
+GET     /feed/:SubscriptionID.rss  Feed.GetFeed
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/*filepath                       Static.Serve("public")
