@@ -10,3 +10,10 @@
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+none
+app/tmp
+app/routes
+environment
+run.bat
+run.sh
+paisley

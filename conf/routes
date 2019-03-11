@@ -1,0 +1,33 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+module:testrunner
+module:jobs
+module:static
+
+GET     /                                       Application.Index
+
+GET     /register                               Application.Register
+POST    /register                               Application.SaveUser
+
+POST    /login                                  Application.Login
+GET     /logout                                 Application.Logout
+
+GET     /subscriptions  Subscriptions.Index
+POST    /subscriptions  Subscriptions.Create
+#GET     /subscriptions/:id  Subscriptions.Show
+#PUT     /subscriptions/:id  Subscriptions.Edit
+
+
+GET     /feed/:subredit  Feed.GetFeed
+
+# Map static resources from the /app/public folder to the /public path
+GET     /public/*filepath                       Static.Serve("public")
+GET     /dir/                                   Static.ServeDir("public")
+GET     /dir/*filepath                          Static.ServeDir("public")
+GET     /favicon.ico                            Static.Serve("public/img","favicon.png")
+GET     /robot.txt                            Static.Serve("public","robot.txt")
+
+# Catch all
+*       /:controller/:action                  :controller.:action

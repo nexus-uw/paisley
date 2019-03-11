@@ -1,0 +1,73 @@
+{{set . "title" "Subs"}}
+{{template "header.html" .}}
+
+<h1>Subscriptions</h1>
+
+<form method="POST" action="{{url "Subscriptions.Create"}}">
+
+    <div>
+        <label>Frequency (times per day)</label>
+        <input name="subscription.Frequency" required type="range" min="1" max="6" />
+    </div>
+    <div>
+        <label>Subredit</label>
+        <input name="subscription.Subredit" required />
+    </div>
+
+    <div>
+        <label>Include Comments?</label>
+        <input name="subscription.IncludeComments" type="checkbox" />
+    </div>
+
+    <div>
+        <label>Include User Names?</label>
+        <input name="subscription.IncludeUserNames" type="checkbox" />
+    </div>
+    <p class="buttons">
+        <input type="submit" value="Create" name="Create">
+    </p>
+</form>
+
+
+{{if not .subscriptions}}
+<p>
+    No subs Found
+</p>
+{{else}}
+
+
+<table>
+    <thead>
+        <tr>
+            <th>Frequency</th>
+            <th>OwnerID</th>
+            <th>Subredit</th>
+            <th>IncludeComments</th>
+            <th>IncludeUserNames</th>
+
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        {{range .subscriptions}}
+
+        <tr>
+            <td>{{.Frequency}}</td>
+            <td>{{.OwnerID}}</td>
+            <td>{{.Subredit}}</td>
+            <td>{{.IncludeComments}}</td>
+            <td>{{.IncludeUserNames}}</td>
+
+            <td>
+                <form id="d{{.SubscriptionID}}" method="POST" action="/bookings/{{.SubscriptionID}}/cancel">
+                    <a href="javascript:document.getElementById('d{{.SubscriptionID}}').submit();">Cancel</a>
+                </form>
+            </td>
+        </tr>
+        {{end}}
+    </tbody>
+</table>
+{{end}}
+
+{{template "footer.html" .}}
