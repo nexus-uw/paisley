@@ -3,28 +3,28 @@ Paisley
 
 GOALS
  create custom rss feed for reddit
- get to choice
- - what subreddit
+ get to choose
+ - which subreddit
  - max posts per day in the feed
  - min activity rules 
    - comment count
    - up count
-   - down count
-   - up - down count
+   - up vs down ratio
 - if include comments in rss
 - if include names of comments
 
+user will use their own rss reader (provide link: https://en.wikipedia.org/wiki/Comparison_of_feed_aggregators)
+
 feed will be unique per user (private)
 
-design
+design todos
 refresh once per day
 pull whole thing into db
 clear up posts in db after X days
-user accounts
-landing page
-user home page to edit + create + delete feeds
+user accounts -> 
+  edit + create + delete feeds
+landing page for new folks
 postgres db ?
-do docker container
 to make high availablity feed fetcher will have to use queue + workers (eventually)
 
 
