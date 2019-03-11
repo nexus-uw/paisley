@@ -26,6 +26,7 @@ user accounts ->
 landing page for new folks
 postgres db ?
 to make high availablity feed fetcher will have to use queue + workers (eventually)
+switch feed id to guid instead of int (people cant peak at other's feeds without knowing the id)
 
 
 
