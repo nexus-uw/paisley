@@ -1,4 +1,5 @@
-NAME: TODO
+Paisley
+=======
 
 GOALS
  create custom rss feed for reddit
