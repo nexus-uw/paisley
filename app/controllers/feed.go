@@ -5,7 +5,7 @@ import (
 	"log"
 	"math"
 	"os"
-	"paisley/app/models"
+	"github.com/nexus-uw/paisley/app/models"
 	"strings"
 	"time"
 

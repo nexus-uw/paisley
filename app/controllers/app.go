@@ -6,8 +6,8 @@ import (
 	"github.com/revel/revel"
 
 	"database/sql"
-	"paisley/app/models"
-	"paisley/app/routes"
+	"github.com/nexus-uw/paisley/app/models"
+	"github.com/nexus-uw/paisley/app/routes"
 
 	"github.com/revel/modules/orm/gorp/app/controllers"
 )

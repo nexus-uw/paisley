@@ -1,11 +1,11 @@
 package controllers
 
 import (
-	"paisley/app/routes"
+	"github.com/nexus-uw/paisley/app/routes"
 
 	"github.com/revel/revel"
 
-	"paisley/app/models"
+	"github.com/nexus-uw/paisley/app/models"
 )
 
 type Subscriptions struct {

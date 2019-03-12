@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"paisley/app/models"
+	"github.com/nexus-uw/paisley/app/models"
 
 	rgorp "github.com/revel/modules/orm/gorp/app"
 	"github.com/revel/revel"
