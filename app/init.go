@@ -58,38 +58,40 @@ func init() {
 	})
 
 	revel.OnAppStart(func() {
+		revel.AppLog.Debug("SIMON TEST MSG TABLES  BE HERE")
+
 		Dbm := rgorp.Db.Map
 		setColumnSizes := func(t *gorp.TableMap, colSizes map[string]int) {
 			for col, size := range colSizes {
 				t.ColMap(col).MaxSize = size
 			}
 		}
-
-		t := Dbm.AddTable(models.User{}).SetKeys(true, "UserId")
+		t := Dbm.AddTableWithName(models.User{}, "users").SetKeys(true, "UserId")
 		t.ColMap("Password").Transient = true
 		setColumnSizes(t, map[string]int{
 			"Username": 20,
 			"Name":     100,
 		})
 
-		t = Dbm.AddTable(models.Subscription{}).SetKeys(true, "SubscriptionID")
+		t = Dbm.AddTableWithName(models.Subscription{}, "subscriptions").SetKeys(true, "SubscriptionID")
 		setColumnSizes(t, map[string]int{
 			"Subredit": 50,
 		})
 
 		rgorp.Db.TraceOn(revel.AppLog)
-		Dbm.CreateTables()
+		Dbm.CreateTablesIfNotExists()
 
-		bcryptPassword, _ := bcrypt.GenerateFromPassword(
-			[]byte("demo"), bcrypt.DefaultCost)
-		demoUser := &models.User{0, "Demo User", "demo", "demo", bcryptPassword}
-		if err := Dbm.Insert(demoUser); err != nil {
-			panic(err)
-		}
 		count, _ := rgorp.Db.SelectInt(rgorp.Db.SqlStatementBuilder.Select("count(*)").From("User"))
-		if count > 1 {
-			revel.AppLog.Panic("Unexpected multiple users", "count", count)
+		if count < 1 {
+			bcryptPassword, _ := bcrypt.GenerateFromPassword(
+				[]byte("demo"), bcrypt.DefaultCost)
+			demoUser := &models.User{0, "Demo User", "demo", "demo", bcryptPassword}
+			if err := Dbm.Insert(demoUser); err != nil {
+				panic(err)
+			}
 		}
+
+		revel.AppLog.Debug("SIMON TEST MSG TABLES SHOUL BE HERE")
 
 	}, 5)
 }
