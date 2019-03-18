@@ -66,14 +66,14 @@ func init() {
 				t.ColMap(col).MaxSize = size
 			}
 		}
-		t := Dbm.AddTableWithName(models.User{}, "users").SetKeys(true, "UserId")
+		t := Dbm.AddTableWithName(models.User{}, "users").SetKeys(false, "UserId")
 		t.ColMap("Password").Transient = true
 		setColumnSizes(t, map[string]int{
 			"Username": 20,
 			"Name":     100,
 		})
 
-		t = Dbm.AddTableWithName(models.Subscription{}, "subscriptions").SetKeys(true, "SubscriptionID")
+		t = Dbm.AddTableWithName(models.Subscription{}, "subscriptions").SetKeys(false, "SubscriptionID")
 		setColumnSizes(t, map[string]int{
 			"Subredit": 50,
 		})
