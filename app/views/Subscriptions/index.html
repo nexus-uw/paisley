@@ -86,7 +86,8 @@
             <td><a href="/feed/{{.SubscriptionID}}.rss">RSS Link</a></td>
             <td>
                 <form id="d{{.SubscriptionID}}" method="POST" action="/subscriptions/{{.SubscriptionID}}/delete">
-                    <a href="javascript:document.getElementById('d{{.SubscriptionID}}').submit();">Delete</a>
+                    <!-- <a href="javascript:document.getElementById('d{{.SubscriptionID}}').submit();">Delete</a> -->
+                    <button type="submit">delete</button>
                 </form>
             </td>
         </tr>

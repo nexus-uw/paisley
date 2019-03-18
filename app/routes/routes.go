@@ -97,6 +97,15 @@ func (_ tSubscriptions) Create(
 	return revel.MainRouter.Reverse("Subscriptions.Create", args).URL
 }
 
+func (_ tSubscriptions) Delete(
+		SubscriptionID string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "SubscriptionID", SubscriptionID)
+	return revel.MainRouter.Reverse("Subscriptions.Delete", args).URL
+}
+
 
 type tJobs struct {}
 var Jobs tJobs

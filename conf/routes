@@ -16,7 +16,7 @@ GET     /logout                                 Application.Logout
 
 GET     /subscriptions  Subscriptions.Index
 POST    /subscriptions  Subscriptions.Create
-#GET     /subscriptions/:id  Subscriptions.Show
+POST     /subscriptions/:SubscriptionID/delete  Subscriptions.Delete
 #PUT     /subscriptions/:id  Subscriptions.Edit
 
 
