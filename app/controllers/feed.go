@@ -5,9 +5,10 @@ import (
 	"log"
 	"math"
 	"os"
-	"github.com/nexus-uw/paisley/app/models"
 	"strings"
 	"time"
+
+	"github.com/nexus-uw/paisley/app/models"
 
 	"github.com/revel/revel"
 
@@ -88,11 +89,8 @@ func (c Feed) GetFeed(SubscriptionID string) revel.Result {
 		},
 	}
 
-	var Subscription *models.Subscription
-	err := c.Txn.SelectOne(&Subscription,
-		c.Db.SqlStatementBuilder.Select("*").
-			From("Subscription").Where("SubscriptionID = ?", SubscriptionID))
-
+	obj, err := c.Db.Get(models.Subscription{}, SubscriptionID)
+	Subscription := obj.(*models.Subscription)
 	if err != nil {
 		panic(err)
 	}
@@ -104,6 +102,7 @@ func (c Feed) GetFeed(SubscriptionID string) revel.Result {
 		return c.RenderError(err)
 	}
 
+	
 	now := time.Now()
 	feed := &feeds.Feed{
 		Title:       subredditName,
