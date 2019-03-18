@@ -40,7 +40,7 @@ func (c Subscriptions) Create(subscription models.Subscription) revel.Result {
 	subscription.SubscriptionID = uuid.New().String()
 	subscription.Validate(c.Validation)
 
-	// todo: assert that subredit actually exists
+	// todo: assert that subredit actually exists...
 
 	err := c.Txn.Insert(&subscription)
 	if err != nil {

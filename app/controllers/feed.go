@@ -16,6 +16,7 @@ import (
 
 	"github.com/gorilla/feeds"
 	"github.com/turnage/graw/reddit"
+	"gitlab.com/golang-commonmark/markdown"
 )
 
 type Feed struct {
@@ -44,6 +45,10 @@ func createBody(post *reddit.Post) string {
 			}
 			return false
 		},
+		"renderMarkdown": func(markdownStr string) string {
+			md := markdown.New(markdown.XHTMLOutput(true))
+			return md.RenderToString([]byte(markdownStr))
+		},
 	}
 	out := new(bytes.Buffer)
 	t, err := template.New("foo").Funcs(funcMap).Parse(`
@@ -51,17 +56,22 @@ func createBody(post *reddit.Post) string {
 	<body>
 		
 		{{if ( isImageLink .URL) }}
-		<img  src="{{.URL}}" alt="post image"/>
+		<div>
+			<img  src="{{.URL}}" alt="post image" width="100%"/>
+		</div>
 		{{else if .URL}}
 		{{if .Thumbnail}}
-		<img src="{{.Thumbnail}}" alt="thumbnail"/>
-		{{end}}
-		<a href="{{.URL}}"> Link </a>
-		{{end}}
-		
-		
 		<div>
-			{{.SelfText}}
+			<img src="{{.Thumbnail}}" alt="thumbnail"/>
+		</div>
+		{{end}}
+		<div>
+			Link: <a href="{{.URL}}">{{.URL}}</a>
+		</div>
+		{{end}}
+				
+		<div>
+			{{.SelfText | renderMarkdown}}
 		</div>
 	</body>
 	</html>
@@ -102,7 +112,6 @@ func (c Feed) GetFeed(SubscriptionID string) revel.Result {
 		return c.RenderError(err)
 	}
 
-	
 	now := time.Now()
 	feed := &feeds.Feed{
 		Title:       subredditName,
@@ -119,9 +128,9 @@ func (c Feed) GetFeed(SubscriptionID string) revel.Result {
 			postVoteRatio = int(math.Round((float64(post.Ups) / float64(post.Downs)) * 1000))
 		}
 		if post.Deleted ||
-			Subscription.MinVoteRatio < postVoteRatio ||
-			int32(Subscription.MinVoteCount) < (post.Ups+post.Downs) ||
-			int32(Subscription.MinNumberOfComments) < post.NumComments {
+			Subscription.MinVoteRatio > postVoteRatio ||
+			int32(Subscription.MinVoteCount) > (post.Ups+post.Downs) ||
+			int32(Subscription.MinNumberOfComments) > post.NumComments {
 			continue
 		}
 
@@ -132,6 +141,7 @@ func (c Feed) GetFeed(SubscriptionID string) revel.Result {
 		// if include comments it turned on, append to body => https://golang.org/pkg/html/template/
 		feed.Items = append(feed.Items,
 			&feeds.Item{
+				Id:          post.ID,
 				Title:       post.Title,
 				Link:        &feeds.Link{Href: "https://reddit.com" + post.Permalink},
 				Description: createBody(post),
