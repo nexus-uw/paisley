@@ -5,6 +5,7 @@ import (
 
 	"github.com/revel/revel"
 
+	"github.com/google/uuid"
 	"github.com/nexus-uw/paisley/app/models"
 )
 
@@ -25,7 +26,7 @@ func (c Subscriptions) Index() revel.Result {
 	var subscriptions []*models.Subscription
 	_, err := c.Txn.Select(&subscriptions,
 		c.Db.SqlStatementBuilder.Select("*").
-			From("Subscription")) /*.Where("UserId = ?", c.connected().UserId))*/
+			From("subscriptions")) /*.Where("UserId = ?", c.connected().UserId))*/
 
 	if err != nil {
 		panic(err)
@@ -36,8 +37,10 @@ func (c Subscriptions) Index() revel.Result {
 
 func (c Subscriptions) Create(subscription models.Subscription) revel.Result {
 	subscription.OwnerID = c.connected().UserId
-
+	subscription.SubscriptionID = uuid.New().String()
 	subscription.Validate(c.Validation)
+
+	// todo: assert that subredit actually exists
 
 	err := c.Txn.Insert(&subscription)
 	if err != nil {
@@ -46,5 +49,11 @@ func (c Subscriptions) Create(subscription models.Subscription) revel.Result {
 	c.Flash.Success("Thank you, %s, created sub",
 		c.connected().Name)
 	return c.Redirect(routes.Subscriptions.Index())
+
+}
+
+func (c Subscriptions) Delete(SubscriptionID string) revel.Result {
+
+	panic("TODO: implement delete Subscription for SubscriptionID=" + SubscriptionID)
 
 }

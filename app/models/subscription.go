@@ -5,7 +5,7 @@ import (
 )
 
 type Subscription struct {
-	SubscriptionID      int
+	SubscriptionID      string
 	Frequency           int
 	OwnerID             int
 	Subredit            string
