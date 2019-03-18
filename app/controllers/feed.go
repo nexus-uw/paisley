@@ -120,8 +120,11 @@ func (c Feed) GetFeed(SubscriptionID string) revel.Result {
 		Author:      &feeds.Author{Name: "Pasiley", Email: "lol@example.com"},
 		Created:     now,
 	}
-
-	for _, post := range harvest.Posts[:] {
+	var maxPosts = int(math.Min(100, float64(len(harvest.Posts))))
+	if Subscription.MaxDailyPosts != 0 {
+		maxPosts = Subscription.MaxDailyPosts
+	}
+	for _, post := range harvest.Posts[:maxPosts] {
 
 		var postVoteRatio = 100
 		if post.Downs > 0 {
